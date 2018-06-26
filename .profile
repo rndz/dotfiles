@@ -10,3 +10,8 @@ export PATH=$PATH:/usr/local/go/bin
 
 export GOPATH=$HOME/golang
 export PATH=$PATH:$GOPATH/bin
+
+alias gotest="go test $(go list ./... | grep -v /vendor/)"
+
+eval `ssh-agent -s`
+ssh-add ~/.ssh/id_rsa

@@ -8,17 +8,19 @@ Plugin 'gmarik/Vundle.vim'
 Plugin 'Valloric/YouCompleteMe'
 " Apperance
 Plugin 'altercation/vim-colors-solarized'
-Plugin 'bling/vim-airline'
+"Plugin 'bling/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
+Plugin 'vim-airline/vim-airline'
 
 " Navigation
 Plugin 'kien/ctrlp.vim'
 Plugin 'mileszs/ack.vim'
 
 " Editing
-Plugin 'scrooloose/syntastic'
+Plugin 'vim-syntastic/syntastic'
 Plugin 'scrooloose/nerdcommenter'
 "Plugin 'Raimondi/delimitMate'
-"Plugin 'SirVer/ultisnips'
+Plugin 'SirVer/ultisnips'
 "Plugin 'honza/vim-snippets'
 
 Plugin 'vim-scripts/taglist.vim'
@@ -48,6 +50,8 @@ endtry
 
 
 set hidden
+set foldmethod=syntax
+autocmd Syntax go normal zR
 
 " Airline
 let g:airline_theme='solarized'
@@ -108,9 +112,6 @@ set dir=~/.vim_tmp/
 set backupdir=~/.vim_tmp/
 set undodir=~/.vim_tmp/
 
-nnoremap j gj
-nnoremap k gk
-
 function! <SID>StripTrailingWhitespaces()
     " Preparation save last search, and cursor position.
     let _s=@/
@@ -153,4 +154,30 @@ endif
 map <leader>rr :source ~/.vimrc<CR>
 
 let g:go_fmt_command = "goimports"
+"let g:go_list_type = "quickfix"
 
+let g:UltiSnipsExpandTrigger="<F1>"
+
+inoremap {<CR> {<CR>}<Esc>O
+
+"let g:syntastic_go_checkers = ['golint', 'govet', 'errcheck', 'go']
+"let g:syntastic_mode_map = { 'mode': 'active', 'passive_filetypes': ['go'] }
+let g:go_list_type = "quickfix"
+
+function! CopyMatches(reg)
+  let hits = []
+  %s//\=len(add(hits, submatch(0))) ? submatch(0) : ''/ge
+  let reg = empty(a:reg) ? '+' : a:reg
+  execute 'let @'.reg.' = join(hits, "\n") . "\n"'
+endfunction
+command! -register CopyMatches call CopyMatches(<q-reg>)
+
+let g:syntastic_go_checkers = ["gofmt"]
+
+nnoremap <esc> :noh<return><esc>
+nnoremap <esc>^[ <esc>^[
+
+if !exists("autocommands_loaded")
+  let autocommands_loaded = 1
+  autocmd BufWritePost *.go :GoBuild
+endif

@@ -156,3 +156,5 @@ bar {
 }
 
 bindsym $mod+o exec i3lock -i ~/gopher.png
+
+exec ssh-add ~/.ssh/id_rsa

@@ -1,2 +1,4 @@
 xrdb -merge ~/.Xresources
-/usr/local/bin/i3
+/usr/bin/i3
+xrandr --output HDMI2 --auto --left-of HDMI3
+setxkbmap -option grp:switch,grp:caps_toggle us,lt
